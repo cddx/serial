@@ -12,7 +12,7 @@ namespace test
     public partial class FrmSerialCommuctionTest : Form
     {
         private readonly StringBuilder _sb = new StringBuilder();
-        private readonly SerialPort _sp1 = new SerialPort();
+        private readonly SerialPort _sp = new SerialPort();
         public long Displaybytes { get; private set; }
         private long _inbytes;
         private long _outbytes;
@@ -26,40 +26,43 @@ namespace test
 
         private void FrmSerialCommuctionTest_Load(object sender, EventArgs e)
         {
-            //var ports1 = SerialPort.GetPortNames();
-            //Array.Sort(ports1);
-            //cboComPort1.Items.AddRange(ports1);
-
-            //if (ports1.Length == 0)
-            //{
-            //    MessageBox.Show("没有发现串口");
-            //}
-
             var filePath = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
 
             if (File.Exists(filePath))
             {
-                cboComPort1.SelectedIndex = cboComPort1.Items.IndexOf(Properties.Settings.Default.com_1);
-                cboBaudRate1.SelectedIndex = cboBaudRate1.Items.IndexOf(Properties.Settings.Default.baud_1);
+                cboComPort.SelectedIndex = cboComPort.Items.IndexOf(Properties.Settings.Default.com_1);
+                cboBaudRate.SelectedIndex = cboBaudRate.Items.IndexOf(Properties.Settings.Default.baud_1);
                 txtInterval.Text = Properties.Settings.Default.interval_1;
             }
             else
             {
-                cboComPort1.SelectedIndex = cboComPort1.Items.IndexOf(Properties.Settings.Default.com1);
-                cboBaudRate1.SelectedIndex = cboBaudRate1.Items.IndexOf(Properties.Settings.Default.baud1);
+                cboComPort.SelectedIndex = cboComPort.Items.IndexOf(Properties.Settings.Default.com1);
+                cboBaudRate.SelectedIndex = cboBaudRate.Items.IndexOf(Properties.Settings.Default.baud1);
                 txtInterval.Text = Properties.Settings.Default.interval;
             }
 
             txtInBytes.Text = "0";
             txtOutBytes.Text = "0";
 
-            _sp1.NewLine = Environment.NewLine;
+            _sp.NewLine = Environment.NewLine;
 
             btnSend.Enabled = false;
-            radAscii.Checked = true;
-            radHex.Checked = false;
+            btnClear.Enabled = false;
+
             chkAuto.Enabled = false;
+
+            txtSend.Enabled = false;
+            txtInBytes.Enabled = false;
+            txtOutBytes.Enabled = false;
+            txtInterval.Enabled = false;
+
             timer1.Enabled = false;
+            radHex.Checked = false;
+            radAscii.Checked = true;
+
+            cboBaudRate.Enabled = true;
+            cboComPort.Enabled = true;
+
             txtSend.Text = Properties.Settings.Default.greeting;
         }
 
@@ -72,27 +75,35 @@ namespace test
             txtOutBytes.Text = @"0";
         }
 
-        private void btnOpen1_Click(object sender, EventArgs e)
+        private void btnOpen_Click(object sender, EventArgs e)
         {
-            if (_sp1.IsOpen)
+            if (_sp.IsOpen)
             {
                 timer1.Enabled = false;
                 chkAuto.Checked = false;
                 chkAuto.Enabled = false;
-                _sp1.DataReceived -= sp1_DataReceived;
-                _sp1.Close();
+                _sp.DataReceived -= sp_DataReceived;
+                _sp.Close();
                 _inbytes = 0;
                 _outbytes = 0;
                 Displaybytes = 0;
             }
             else
             {
-                _sp1.PortName = cboComPort1.Text;
-                _sp1.BaudRate = int.Parse(cboBaudRate1.Text);
                 try
                 {
-                    _sp1.Open();
-                    _sp1.DataReceived += sp1_DataReceived;
+                    _sp.PortName = cboComPort.Text;
+                    _sp.BaudRate = int.Parse(cboBaudRate.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                try
+                {
+                    _sp.Open();
+                    _sp.DataReceived += sp_DataReceived;
                 }
                 catch (Exception ex)
                 {
@@ -100,14 +111,14 @@ namespace test
                 }
                 chkAuto.Enabled = true;
             }
-            btnOpen1.Text = _sp1.IsOpen ? "Close" : "Open";
-            btnSend.Enabled = _sp1.IsOpen;
+            btnOpen.Text = _sp.IsOpen ? "Close" : "Open";
+            btnSend.Enabled = _sp.IsOpen;
         }
 
         private void btnSend_Click(object sender, EventArgs e)
         {
             int n;
-            if (_sp1.IsOpen)
+            if (_sp.IsOpen)
             {
                 if (radHex.Checked)
                 {
@@ -117,12 +128,12 @@ namespace test
                     {
                         buf.Add(byte.Parse(m.Value, NumberStyles.HexNumber));
                     }
-                    _sp1.Write(buf.ToArray(), 0, buf.Count);
+                    _sp.Write(buf.ToArray(), 0, buf.Count);
                     n = buf.Count;
                 }
                 else
                 {
-                    _sp1.WriteLine(txtSend.Text);
+                    _sp.WriteLine(txtSend.Text);
                     n = txtSend.Text.Length;
                 }
                 _outbytes += n;
@@ -131,25 +142,18 @@ namespace test
 
         private void chkAuto_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkAuto.Checked)
-            {
-                timer1.Enabled = true;
-            }
-            else
-            {
-                timer1.Enabled = false;
-            }
+            timer1.Enabled = chkAuto.Checked;
         }
 
-        private void sp1_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            var n = _sp1.BytesToRead;
+            var n = _sp.BytesToRead;
 
             var buf = new byte[n];
             _inbytes += n;
             Bytesintxtbox += n;
 
-            _sp1.Read(buf, 0, n);
+            _sp.Read(buf, 0, n);
             _sb.Clear();
             Displaybytes += n;
 
@@ -191,9 +195,7 @@ namespace test
             Properties.Settings.Default.interval_1 = txtInterval.Text;
             Properties.Settings.Default.Save();
 
-            int time;
-
-            if (int.TryParse(txtInterval.Text, out time))
+            if (int.TryParse(txtInterval.Text, out var time))
             {
                 timer1.Interval = time;
             }
@@ -209,21 +211,13 @@ namespace test
         /// </summary>
         private void cboBaudRate1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //var config = ConfigurationManager.OpenExeConfiguration(@"test.exe");
-            //if (config.HasFile)
-            //{
-            //    var appSection = (AppSettingsSection)config.GetSection("appSettings");
-            //    appSection.Settings["BaudRate1"].Value = cboBaudRate1.SelectedItem.ToString();
-            //    config.Save(ConfigurationSaveMode.Modified);
-            //    ConfigurationManager.RefreshSection("appSettings");
-            //}
-            Properties.Settings.Default.baud_1 = cboBaudRate1.SelectedItem.ToString();
+            Properties.Settings.Default.baud_1 = cboBaudRate.SelectedItem.ToString();
             Properties.Settings.Default.Save();
         }
 
         private void cboComPort1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.com_1 = cboComPort1.SelectedItem.ToString();
+            Properties.Settings.Default.com_1 = cboComPort.SelectedItem.ToString();
             Properties.Settings.Default.Save();
         }
 

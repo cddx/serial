@@ -33,12 +33,12 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.txtLog = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblCOM1 = new System.Windows.Forms.Label();
-            this.cboComPort1 = new System.Windows.Forms.ComboBox();
+            this.lblCOM = new System.Windows.Forms.Label();
+            this.cboComPort = new System.Windows.Forms.ComboBox();
             this.txtSend = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.cboBaudRate1 = new System.Windows.Forms.ComboBox();
-            this.btnOpen1 = new System.Windows.Forms.Button();
+            this.cboBaudRate = new System.Windows.Forms.ComboBox();
+            this.btnOpen = new System.Windows.Forms.Button();
             this.radAscii = new System.Windows.Forms.RadioButton();
             this.radHex = new System.Windows.Forms.RadioButton();
             this.btnClear = new System.Windows.Forms.Button();
@@ -87,23 +87,23 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "LOG:";
             // 
-            // lblCOM1
+            // lblCOM
             // 
-            this.lblCOM1.AutoSize = true;
-            this.lblCOM1.Location = new System.Drawing.Point(16, 22);
-            this.lblCOM1.Name = "lblCOM1";
-            this.lblCOM1.Size = new System.Drawing.Size(71, 12);
-            this.lblCOM1.TabIndex = 3;
-            this.lblCOM1.Text = "SerialPort:";
+            this.lblCOM.AutoSize = true;
+            this.lblCOM.Location = new System.Drawing.Point(16, 22);
+            this.lblCOM.Name = "lblCOM";
+            this.lblCOM.Size = new System.Drawing.Size(71, 12);
+            this.lblCOM.TabIndex = 3;
+            this.lblCOM.Text = "SerialPort:";
             // 
-            // cboComPort1
+            // cboComPort
             // 
-            this.cboComPort1.FormattingEnabled = true;
-            this.cboComPort1.Location = new System.Drawing.Point(92, 18);
-            this.cboComPort1.Name = "cboComPort1";
-            this.cboComPort1.Size = new System.Drawing.Size(71, 20);
-            this.cboComPort1.TabIndex = 4;
-            this.cboComPort1.SelectedIndexChanged += new System.EventHandler(this.cboComPort1_SelectedIndexChanged);
+            this.cboComPort.FormattingEnabled = true;
+            this.cboComPort.Location = new System.Drawing.Point(92, 18);
+            this.cboComPort.Name = "cboComPort";
+            this.cboComPort.Size = new System.Drawing.Size(71, 20);
+            this.cboComPort.TabIndex = 4;
+            this.cboComPort.SelectedIndexChanged += new System.EventHandler(this.cboComPort1_SelectedIndexChanged);
             // 
             // txtSend
             // 
@@ -122,10 +122,10 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "BaudRate:";
             // 
-            // cboBaudRate1
+            // cboBaudRate
             // 
-            this.cboBaudRate1.FormattingEnabled = true;
-            this.cboBaudRate1.Items.AddRange(new object[] {
+            this.cboBaudRate.FormattingEnabled = true;
+            this.cboBaudRate.Items.AddRange(new object[] {
             "1200",
             "2400",
             "4800",
@@ -134,21 +134,21 @@
             "38400",
             "57600",
             "115200"});
-            this.cboBaudRate1.Location = new System.Drawing.Point(239, 18);
-            this.cboBaudRate1.Name = "cboBaudRate1";
-            this.cboBaudRate1.Size = new System.Drawing.Size(71, 20);
-            this.cboBaudRate1.TabIndex = 10;
-            this.cboBaudRate1.SelectedIndexChanged += new System.EventHandler(this.cboBaudRate1_SelectedIndexChanged);
+            this.cboBaudRate.Location = new System.Drawing.Point(239, 18);
+            this.cboBaudRate.Name = "cboBaudRate";
+            this.cboBaudRate.Size = new System.Drawing.Size(71, 20);
+            this.cboBaudRate.TabIndex = 10;
+            this.cboBaudRate.SelectedIndexChanged += new System.EventHandler(this.cboBaudRate1_SelectedIndexChanged);
             // 
-            // btnOpen1
+            // btnOpen
             // 
-            this.btnOpen1.Location = new System.Drawing.Point(335, 17);
-            this.btnOpen1.Name = "btnOpen1";
-            this.btnOpen1.Size = new System.Drawing.Size(84, 23);
-            this.btnOpen1.TabIndex = 11;
-            this.btnOpen1.Text = "Open";
-            this.btnOpen1.UseVisualStyleBackColor = true;
-            this.btnOpen1.Click += new System.EventHandler(this.btnOpen1_Click);
+            this.btnOpen.Location = new System.Drawing.Point(335, 17);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(84, 23);
+            this.btnOpen.TabIndex = 11;
+            this.btnOpen.Text = "Open";
+            this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // radAscii
             // 
@@ -257,19 +257,18 @@
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.radHex);
             this.Controls.Add(this.radAscii);
-            this.Controls.Add(this.btnOpen1);
-            this.Controls.Add(this.cboBaudRate1);
+            this.Controls.Add(this.btnOpen);
+            this.Controls.Add(this.cboBaudRate);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtSend);
-            this.Controls.Add(this.cboComPort1);
-            this.Controls.Add(this.lblCOM1);
+            this.Controls.Add(this.cboComPort);
+            this.Controls.Add(this.lblCOM);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.btnSend);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmSerialCommuctionTest";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SerialCommuctionTest";
             this.Load += new System.EventHandler(this.FrmSerialCommuctionTest_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -282,12 +281,12 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblCOM1;
-        private System.Windows.Forms.ComboBox cboComPort1;
+        private System.Windows.Forms.Label lblCOM;
+        private System.Windows.Forms.ComboBox cboComPort;
         private System.Windows.Forms.TextBox txtSend;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cboBaudRate1;
-        private System.Windows.Forms.Button btnOpen1;
+        private System.Windows.Forms.ComboBox cboBaudRate;
+        private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.RadioButton radAscii;
         private System.Windows.Forms.RadioButton radHex;
         private System.Windows.Forms.Button btnClear;

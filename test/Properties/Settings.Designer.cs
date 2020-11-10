@@ -94,5 +94,17 @@ namespace test.Properties {
                 this["interval_1"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string sendout_1 {
+            get {
+                return ((string)(this["sendout_1"]));
+            }
+            set {
+                this["sendout_1"] = value;
+            }
+        }
     }
 }
